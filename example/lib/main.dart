@@ -6,13 +6,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:streams_channel/streams_channel.dart';
 
-final StreamsChannel testChannel = new StreamsChannel('streams_channel_test');
+final StreamsChannel testChannel =  StreamsChannel('streams_channel_test');
 
-void main() => runApp(new MyApp());
+void main() => runApp( MyApp());
 
 class MyApp extends StatefulWidget {
   @override
-  _MyAppState createState() => new _MyAppState();
+  _MyAppState createState() =>  _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
@@ -28,10 +28,10 @@ class _MyAppState extends State<MyApp> {
       subscription.cancel();
       subscription = null;
     } else {
-      final streamId = 'Stream ${a ? 'A' : 'B'}';
+      final String streamId = 'Stream ${a ? 'A' : 'B'}';
       subscription = testChannel
           .receiveBroadcastStream(streamId)
-          .listen((data) => debugPrint('Received from $streamId: $data'));
+          .listen((dynamic data) => debugPrint('Received from $streamId: $data'));
 
       subscription.onDone(() {
         setState(() {
@@ -55,20 +55,20 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      home: new Scaffold(
-        appBar: new AppBar(
-          title: new Text('Demo'),
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Demo'),
         ),
-        body: new Center(
+        body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              new FlatButton(
+              FlatButton(
                 onPressed: () => _start(true),
                 child: Text(_subscriptionA != null ? 'Stop A' : 'Start A'),
               ),
-              new FlatButton(
+              FlatButton(
                 onPressed: () => _start(false),
                 child: Text(_subscriptionB != null ? 'Stop B' : 'Start B'),
               ),

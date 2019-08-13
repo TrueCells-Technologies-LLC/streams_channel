@@ -24,7 +24,7 @@ class StreamsChannel {
     final handlerName = '$name#$id';
 
     StreamController<dynamic> controller;
-    controller = new StreamController<dynamic>.broadcast(onListen: () async {
+    controller =  StreamController<dynamic>.broadcast(onListen: () async {
       BinaryMessages.setMessageHandler(handlerName, (ByteData reply) async {
         if (reply == null) {
           controller.close();
@@ -37,25 +37,25 @@ class StreamsChannel {
         }
       });
       try {
-        await methodChannel.invokeMethod('listen#$id', arguments);
+        await methodChannel.invokeMethod<dynamic>('listen#$id', arguments);
       } catch (exception, stack) {
-        FlutterError.reportError(new FlutterErrorDetails(
+        FlutterError.reportError( FlutterErrorDetails(
           exception: exception,
           stack: stack,
           library: 'streams_channel',
-          context: 'while activating platform stream on channel $name',
+          context: DiagnosticsNode.message('while activating platform stream on channel $name'),
         ));
       }
     }, onCancel: () async {
       BinaryMessages.setMessageHandler(handlerName, null);
       try {
-        await methodChannel.invokeMethod('cancel#$id', arguments);
+        await methodChannel.invokeMethod<dynamic>('cancel#$id', arguments);
       } catch (exception, stack) {
-        FlutterError.reportError(new FlutterErrorDetails(
+        FlutterError.reportError(FlutterErrorDetails(
           exception: exception,
           stack: stack,
           library: 'streams_channel',
-          context: 'while de-activating platform stream on channel $name',
+          context: DiagnosticsNode.message('while de-activating platform stream on channel $name'),
         ));
       }
     });
